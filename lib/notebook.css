@@ -1,0 +1,234 @@
+.cards {
+	display: flex;
+	flex-wrap: wrap;
+	max-width: 1000px;
+	margin: 20px auto;
+}
+
+.month {
+	text-align: center;
+	font-size: 30px;
+}
+
+.card {
+	width: 180px;
+	height: 180px;
+	margin: 10px;
+	position: relative;
+	text-align: center;
+	box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.25);
+	border-radius: 3px;
+	color: white;
+	text-shadow: 2px 2px rgba(0, 0, 0, 0.1);
+	display: none;
+}
+
+.hardware-card {
+	background: var(--hardware-color);
+}
+
+.wetlab-card {
+	background: var(--wetlab-color);
+}
+.software-card {
+	background: var(--software-color);
+}
+
+.card::before,
+.card::after {
+	content: "";
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	right: 5px;
+	bottom: 5px;
+	transition: transform 400ms;
+	z-index: 0;
+}
+
+.card::before {
+	border-top: rgba(255, 255, 255, 0.5) solid 1px;
+	border-bottom: rgba(255, 255, 255, 0.5) solid 1px;
+	transform: scale(0, 1);
+}
+
+.card::after {
+	border-left: rgba(255, 255, 255, 0.5) solid 1px;
+	border-right: rgba(255, 255, 255, 0.5) solid 1px;
+	transform: scale(1, 0);
+}
+
+.card .entryform {
+	display: none;
+}
+
+.card .titlebar {
+	position: relative;
+	display: flex;
+	background: rgba(255, 255, 255, 0.1);
+	color: white;
+	align-items: center;
+	padding-bottom: 5px;
+	text-shadow: 2px 2px rgba(0, 0, 0, 0.1);
+	flex-direction: column;
+	min-height: 50px;
+}
+
+.card .titlebar svg {
+	position: relative;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+.card .titlebar .title,
+.card .titlebar .date,
+.card .titlebar .back {
+	margin: 0;
+	color: white;
+}
+
+.card .titlebar .title {
+	background: none;
+}
+
+.card .titlebar .date {
+	padding: 5px;
+}
+
+.card .titlebar .back {
+	font-size: 60px;
+	position: absolute;
+	top: 15px;
+	right: 10px;
+}
+
+.card .attendees {
+	background: rgba(255, 255, 255, 0.2);
+	color: white;
+	padding: 2px 2px 2px 10px;
+}
+
+.card .description {
+	padding: 10px;
+}
+
+.card .number {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 30px;
+	height: 45px;
+	padding: 2px;
+	background: linear-gradient(
+		to bottom right,
+		rgba(255, 255, 255, 0.1) 0%,
+		rgba(0, 0, 0, 0.1) 50%,
+		rgba(255, 255, 255, 0) 50%
+	);
+	text-align: left;
+}
+
+.card .title {
+	margin: 0;
+	padding: 5px;
+	background: rgba(255, 255, 255, 0.1);
+	height: 45px;
+}
+
+.card .more-info {
+	transform: scale(0, 0);
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: 10px;
+	padding: 5px;
+	border-radius: 2px;
+	box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+	text-transform: uppercase;
+	text-decoration: none;
+	color: white;
+	background: rgba(255, 255, 255, 0.5);
+	transition: transform 400ms;
+	z-index: 1;
+}
+
+.card .titlebar .back:hover, .card .more-info:hover {
+	cursor: pointer;
+}
+
+.card .more-info:after {
+	content: "";
+	display: block;
+	width: 70%;
+	height: 1px;
+	margin: 0 auto;
+	background: white;
+	transform: scale(0, 0);
+	transform-origin: left;
+	transition: transform 250ms;
+}
+
+.card svg {
+	position: absolute;
+	top: 50px;
+	left: 50px;
+	right: 50px;
+	bottom: 50px;
+}
+
+.card .cardform .date {
+	position: absolute;
+	bottom: -10px;
+	left: 0;
+	right: 0;
+	margin-top: 5px;
+	transform: scale(1, 1);
+	transition: transform 400ms;
+}
+
+.card:hover .cardform .date {
+	transform: scale(0, 0);
+	transition: transform 200ms;
+}
+
+.card:hover::before {
+	transform: scale(1, 1);
+}
+
+.card:hover::after {
+	transform: scale(1, 1);
+}
+
+.card:hover .title::after {
+	transform: scale(1, 0.5);
+}
+
+.card:hover .more-info {
+	transform: scale(1, 1);
+	transition: transform 400ms 200ms;
+}
+
+.card .more-info:hover {
+	background: rgba(255, 255, 255, 0.3);
+}
+
+.card .more-info:hover::after {
+	transform: scale(1, 1);
+}
+
+.wetlab-filter:checked ~ .cards .wetlab-card { display: block; }
+.hardware-filter:checked ~ .cards .hardware-card { display: block; }
+.software-filter:checked ~ .cards .software-card { display: block; }
+
+.switch {
+	display: none;
+}
+
+@media screen and (max-width: 1000px) {
+	.cards {
+		justify-content: center;
+	}
+}

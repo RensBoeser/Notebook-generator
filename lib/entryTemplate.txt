@@ -1,0 +1,38 @@
+<style>
+	#switch-{6}:checked ~ #card-{6} {{
+		width: 100%;
+		height: auto;
+	}}
+	#switch-{6}:checked ~ #card-{6} .entryform {{
+		display: block;
+	}}
+	#switch-{6}:checked ~ #card-{6} .cardform,
+	#switch-{6}:checked ~ #card-{6}::before,
+	#switch-{6}:checked ~ #card-{6}::after {{
+		display: none;
+	}}
+</style>
+
+<input type="checkbox" id="switch-{6}" class="switch"></input>
+<div class="card {5}-card" id="card-{6}">
+
+	<div class="entryform">
+		<div class="titlebar">
+{7}
+			<h1 class="title">{0}</h1>
+			<h3 class="date">{1}</h3>
+			<label class="back" for="switch-{6}">&times;</label>
+		</div>
+		<div class="attendees">{2}</div>
+		<div class="description">{3}</div>
+	</div>
+
+	<div class="cardform">
+		<div class="number"><b>{4}</b></div>
+		<h3 class="title" style="color: white; padding: 10px 5px 0 5px;">{0}</h3>
+{7}
+		<label for="switch-{6}" class="more-info">Show more</label>
+		<h2 class="date" style="color: white;">{1}</h2>
+	</div>
+
+</div>
