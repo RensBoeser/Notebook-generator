@@ -77,3 +77,7 @@ class NotebookGenerator:
 		with open(self._outputdir + 'project' + '-' + self.PageName.lower() + '.html', 'w') as f: # TODO: remove the hardcoded 'project' category
 			f.write(page)
 
+if __name__ == '__main__': #Debug code
+	print('Start debug code')
+	gen = NotebookGenerator('./output/', './lib/', 'test')
+	gen.GeneratePage()
