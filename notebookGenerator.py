@@ -1,4 +1,4 @@
-import os, csv, random, operator
+import os, csv, random, operator, json
 
 class NotebookGenerator:
 	def __init__(self, outputdir, libdir, pageName):
@@ -11,16 +11,17 @@ class NotebookGenerator:
 	<input type="checkbox" class="wetlab-filter" checked><span>show wetlab entries<br></span></input>
 	<input type="checkbox" class="hardware-filter" checked><span>show hardware entries<br></span></input>
 	<input type="checkbox" class="software-filter"><span>show software entries<br></span></input>
+	<div class="cards">\n
 		'''
 		self.Footer = '</div>'
 
 		self.EntryTemplate = open(self._libdir + 'entryTemplate.txt').read()
 		
 		self.EntryList = list()
-		# Reading entries from entries.csv and adds them to a list
-		with open(self._libdir + 'entries.csv', newline='') as entries:
-			reader = csv.DictReader(entries)
-			for row in reader:
+		# Reading entries from input.json and adds them to a list
+		with open('./input.json', 'r') as entries:
+			data = json.load(entries)
+			for row in data['entries']:
 				self.EntryList.append(row)
 		# Sort entries on date | TODO: THIS SORTS ON DAYS ONLY
 		# self.EntryList = sorted(self.EntryList, key=lambda entry: entry['date'])
@@ -35,7 +36,7 @@ class NotebookGenerator:
 		else: 																icon = open(self._libdir + 'software_icon.html').read()
 		# Adding all variables to the template string for finalized entry html code
 		return self.EntryTemplate.format(entry['title'],
-																		 entry['date'],
+																		 entry['dateformatted'],
 																		 entry['attendees'],
 																		 entry['description'],
 																		 entry['experimentday'],
@@ -44,30 +45,26 @@ class NotebookGenerator:
 																		 icon)
 	def GeneratePage(self):
 		month = {
-			'1': "January",
-			'2': "February",
-			'3': "March",
-			'4': "April",
-			'5': "May",
-			'6': "June",
-			'7': "July",
-			'8': "August",
-			'9': "September",
-			'10': "October",
-			'11': "November",
-			'12': "December"
+			1: "January",
+			2: "February",
+			3: "March",
+			4: "April",
+			5: "May",
+			6: "June",
+			7: "July",
+			8: "August",
+			9: "September",
+			10: "October",
+			11: "November",
+			12: "December"
 		}
 
 		generatedEntries = ''
 		currentMonth = ''
 		for entry in self.EntryList:
-			entryMonth = month.get(entry['date'].split('-')[1]) # beautiful code I must say! 1. Get date from entry['date'] 2. Get month from that date 4. Get monthname form
-			if currentMonth != entryMonth: # If a new month starts
-				currentMonth = entryMonth
-				if generatedEntries != '': # If it is not the first month
-					generatedEntries = generatedEntries + '</div>\n'
-				generatedEntries = generatedEntries + '\n<h1 class="month">{0}</h1>\n<div class="cards">\n'.format(entryMonth) # Adds the monthname to the page
-
+			splitdate = entry['date'].split('-')
+			entryMonth = month.get(splitdate[1]) # beautiful code I must say! 1. Get date from entry['date'] 2. Get month from that date 4. Get monthname form
+			entry['dateformatted'] = str(month.get(int(splitdate[1]))) + " " + splitdate[0]
 			generatedEntries = generatedEntries + (self.GenerateEntry(entry))
 		
 		page = self.Style + self.Header + generatedEntries + self.Footer
