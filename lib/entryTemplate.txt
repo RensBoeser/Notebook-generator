@@ -29,7 +29,7 @@
 
 	<div class="cardform">
 		<div class="number"><b>{4}</b></div>
-		<h3 class="title" style="color: white; padding: 10px 5px 0 5px;">{0}</h3>
+		<h3 class="title" style="color: white; padding: 10px 5px 5px 5px;">{0}</h3>
 {7}
 		<label for="switch-{6}" class="more-info">Show more</label>
 		<h2 class="date" style="color: white;">{1}</h2>
