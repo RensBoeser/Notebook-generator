@@ -1,3 +1,13 @@
+:root {
+	--wetlab-color: #2E7D32;
+	--hardware-color: #3949AB;
+	--software-color: #424242;
+}
+
+body {
+	font-family: 'Century Gothic';
+}
+
 .cards {
 	display: flex;
 	flex-wrap: wrap;
@@ -11,8 +21,8 @@
 }
 
 .card {
-	width: 180px;
-	height: 180px;
+	width: 220px;
+	height: 220px;
 	margin: 10px;
 	position: relative;
 	text-align: center;
@@ -132,9 +142,9 @@
 
 .card .title {
 	margin: 0;
-	padding: 5px;
 	background: rgba(255, 255, 255, 0.1);
-	height: 45px;
+	height: auto;
+	min-height: 45px;
 }
 
 .card .more-info {
@@ -173,10 +183,13 @@
 
 .card svg {
 	position: absolute;
-	top: 50px;
-	left: 50px;
-	right: 50px;
-	bottom: 50px;
+	top: 80px;
+	left: 70px;
+	right: 70px;
+	bottom: 60px;
+	width: 80px;
+	height: 80px;
+	fill: currentColor;
 }
 
 .card .cardform .date {
