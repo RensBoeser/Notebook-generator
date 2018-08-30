@@ -1,7 +1,7 @@
 import os, csv, random, operator, json
 
 class NotebookGenerator:
-	def __init__(self, outputdir, libdir, pageName):
+	def __init__(self, inputJSON, outputdir, libdir, pageName):
 		self._libdir = libdir
 		self._outputdir = outputdir
 		self.PageName = pageName
@@ -19,8 +19,8 @@ class NotebookGenerator:
 		
 		self.EntryList = list()
 		# Reading entries from input.json and adds them to a list
-		with open('./input.json', 'r') as entries:
-			data = json.load(entries)
+		for i in inputJSON:
+			data = json.loads(i)
 			for row in data['entries']:
 				self.EntryList.append(row)
 		# Sort entries on date | TODO: THIS SORTS ON DAYS ONLY
@@ -76,5 +76,10 @@ class NotebookGenerator:
 
 if __name__ == '__main__': #Debug code
 	print('Start debug code')
-	gen = NotebookGenerator('./output/', './lib/', 'test')
+	with open('./input.json', 'r') as entries:
+		data = entries.read()
+		print(data)
+		outputdir = os.path.dirname(os.path.realpath(__file__)) + '/output/'
+		gen = NotebookGenerator([data, data], outputdir, './lib/', 'test')
+		print(outputdir)
 	gen.GeneratePage()
