@@ -1,5 +1,9 @@
 import os, csv, random, operator, json
 
+def dateSortKey(entry):
+	date = entry['date'].split('-')
+	return int(date[2]) * 10000 + int(date[1]) * 100 + int(date[0])
+
 class NotebookGenerator:
 	def __init__(self, inputJSON, outputdir, libdir, pageName):
 		self._libdir = libdir
@@ -24,7 +28,7 @@ class NotebookGenerator:
 			for row in data['entries']:
 				self.EntryList.append(row)
 		# Sort entries on date | TODO: THIS SORTS ON DAYS ONLY
-		# self.EntryList = sorted(self.EntryList, key=lambda entry: entry['date'])
+		self.EntryList = sorted(self.EntryList, key=dateSortKey)
 		
 	
 	def GenerateEntry(self, entry):
@@ -64,7 +68,7 @@ class NotebookGenerator:
 		for entry in self.EntryList:
 			splitdate = entry['date'].split('-')
 			entryMonth = month.get(splitdate[1]) # beautiful code I must say! 1. Get date from entry['date'] 2. Get month from that date 4. Get monthname form
-			entry['dateformatted'] = str(month.get(int(splitdate[1]))) + " " + splitdate[0]
+			entry['dateformatted'] = str(month.get(int(splitdate[1]))) + " " + str(int(splitdate[0]))
 			generatedEntries = generatedEntries + (self.GenerateEntry(entry))
 		
 		page = self.Style + self.Header + generatedEntries + self.Footer
@@ -78,8 +82,6 @@ if __name__ == '__main__': #Debug code
 	print('Start debug code')
 	with open('./input.json', 'r') as entries:
 		data = entries.read()
-		print(data)
 		outputdir = os.path.dirname(os.path.realpath(__file__)) + '/output/'
 		gen = NotebookGenerator([data, data], outputdir, './lib/', 'test')
-		print(outputdir)
 	gen.GeneratePage()
