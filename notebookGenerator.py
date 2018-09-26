@@ -2,10 +2,14 @@ import os, csv, random, operator, json
 
 def dateSortKey(entry):
 	date = entry['date'].split('-')
-	return int(date[2]) * 10000 + int(date[1]) * 100 + int(date[0])
+	if len(date) == 3:
+		return int(date[2]) * 10000 + int(date[1]) * 100 + int(date[0])
+	else:
+		print(date)
+		return 1
 
 class NotebookGenerator:
-	def __init__(self, inputJSON, outputdir, libdir, pageName):
+	def __init__(self, inputJSON, outputdir, libdir, pageName='notebook'):
 		self._libdir = libdir
 		self._outputdir = outputdir
 		self.PageName = pageName
@@ -26,7 +30,8 @@ class NotebookGenerator:
 		for i in inputJSON:
 			data = json.loads(i)
 			for row in data['entries']:
-				self.EntryList.append(row)
+				if row['date']:
+					self.EntryList.append(row)
 		# Sort entries on date | TODO: THIS SORTS ON DAYS ONLY
 		self.EntryList = sorted(self.EntryList, key=dateSortKey)
 		
@@ -76,6 +81,7 @@ class NotebookGenerator:
 	
 	def WritePage(self, page):
 		with open(self._outputdir + 'project' + '-' + self.PageName.lower() + '.html', 'w') as f: # TODO: remove the hardcoded 'project' category
+			page = page.replace('\u200B', '')
 			f.write(page)
 
 if __name__ == '__main__': #Debug code
