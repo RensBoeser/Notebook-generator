@@ -1,4 +1,4 @@
-import os, csv, random, operator, json
+import os, json
 
 def dateSortKey(entry):
 	date = entry['date'].split('-')
@@ -36,9 +36,8 @@ class NotebookGenerator:
 		self.EntryList = sorted(self.EntryList, key=dateSortKey)
 		
 	
-	def GenerateEntry(self, entry):
+	def GenerateEntry(self, entry, id):
 		# Identifier needed for the checkbox hack in html
-		identifier = random.randint(00000000, 99999999)
 		# Get the right svg file for the entry
 		if 	 entry['category'] == 'hardware': icon = open(self._libdir + 'hardware_icon.html').read()
 		elif entry['category'] == 'wetlab': 	icon = open(self._libdir + 'wetlab_icon.html').read()
@@ -50,7 +49,7 @@ class NotebookGenerator:
 																		 entry['description'],
 																		 entry['experimentday'],
 																		 entry['category'],
-																		 identifier,
+																		 id,
 																		 icon)
 	def GeneratePage(self):
 		month = {
@@ -68,13 +67,14 @@ class NotebookGenerator:
 			12: "December"
 		}
 
+		id = 1
 		generatedEntries = ''
-		currentMonth = ''
 		for entry in self.EntryList:
 			splitdate = entry['date'].split('-')
-			entryMonth = month.get(splitdate[1]) # beautiful code I must say! 1. Get date from entry['date'] 2. Get month from that date 4. Get monthname form
+			# entryMonth = month.get(splitdate[1])
 			entry['dateformatted'] = str(month.get(int(splitdate[1]))) + " " + str(int(splitdate[0]))
-			generatedEntries = generatedEntries + (self.GenerateEntry(entry))
+			generatedEntries = generatedEntries + (self.GenerateEntry(entry, id))
+			id = id + 1
 		
 		page = self.Style + self.Header + generatedEntries + self.Footer
 		self.WritePage(page)
