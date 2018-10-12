@@ -1,12 +1,29 @@
-import os, json
+import os, json, re
 
 def dateSortKey(entry):
 	date = entry['date'].split('-')
 	if len(date) == 3:
-		return int(date[2]) * 10000 + int(date[1]) * 100 + int(date[0])
+		return int(date[2].zfill(4) + date[1].zfill(2) + date[0].zfill(2))
 	else:
 		print(date)
 		return 1
+
+def fillAttendees(entry):
+	# eLabJournal does not allow contributor names to be sent over the API due to missing functionalities.
+	# This is hardcoded for all the experiments we have on our notebook.
+	attendees = {
+		"assessing cooa production": "Dustin van der Meulen",
+		"assessing gas production biobricks in e.coli": "Elise Grootscholten | Randall de Waard",
+		"transformation": "Loraine Nelson | Elise Grootscholten | Paul Reusink",
+		"testing gas production": "Elise Grootscholten | Paul Reusink",
+		"urea and sodium pyruvate test for resistance e.coli": "Randall de Waard | Elise Grootscholten",
+		"chemo competent cells": "Dustin van der Meulen | Jos Veldscholte | Loraine Nelson",
+		"making competent neB10beta cells": "Dustin van der Meulen | Jos Veldscholte",
+		"pcr": "Randall de Waard | Elise Grootscholten"
+	}
+	if entry['attendees'] == "UNKNOWN":
+		entry['attendees'] = attendees.get(entry['title'].lower())
+	return entry['attendees']
 
 class NotebookGenerator:
 	def __init__(self, inputJSON, outputdir, libdir, pageName='notebook'):
@@ -16,6 +33,8 @@ class NotebookGenerator:
 
 		self.Style  = '<style> \n{0}\n</style>'.format(open(self._libdir + 'notebook.css').read())
 		self.Header = '''
+	<h1 class="title">Notebook</h1>
+
 	<input type="checkbox" class="wetlab-filter" checked><span>show wetlab entries<br></span></input>
 	<input type="checkbox" class="hardware-filter" checked><span>show hardware entries<br></span></input>
 	<input type="checkbox" class="software-filter"><span>show software entries<br></span></input>
@@ -32,7 +51,6 @@ class NotebookGenerator:
 			for row in data['entries']:
 				if row['date']:
 					self.EntryList.append(row)
-		# Sort entries on date | TODO: THIS SORTS ON DAYS ONLY
 		self.EntryList = sorted(self.EntryList, key=dateSortKey)
 		
 	
@@ -73,6 +91,13 @@ class NotebookGenerator:
 			splitdate = entry['date'].split('-')
 			# entryMonth = month.get(splitdate[1])
 			entry['dateformatted'] = str(month.get(int(splitdate[1]))) + " " + str(int(splitdate[0]))
+			entry['attendees'] = fillAttendees(entry)
+
+			entry['description'] = entry['description'].replace('µ', '&mu;').replace('é', 'e&#769;').replace('°', '&deg;')
+			# instances = [m.start() for m in re.finditer('°', entry['description'])]
+			# print(entry['title'] + ': ', end="")
+			# print(instances)
+
 			generatedEntries = generatedEntries + (self.GenerateEntry(entry, id))
 			id = id + 1
 		
