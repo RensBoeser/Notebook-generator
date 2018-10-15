@@ -14,7 +14,7 @@
 </style>
 
 <input type="checkbox" id="switch-{6}" class="switch"></input>
-<div class="card {5}-card" id="card-{6}">
+<div class="card {5}-card" id="card-{6}" onclick="">
 
 	<div class="entryform">
 		<div class="titlebar">
@@ -24,7 +24,11 @@
 			<label class="back" for="switch-{6}">&times;</label>
 		</div>
 		<div class="attendees">{2}</div>
-		<div class="description">{3}</div>
+		<div class="description">
+			{3}
+			<p class="experiment"></p>
+			{8}
+		</div>
 	</div>
 
 	<div class="cardform">

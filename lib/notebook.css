@@ -1,17 +1,11 @@
-:root {
-	--wetlab-color: #2E7D32;
-	--hardware-color: #3949AB;
-	--software-color: #424242;
-}
-
-body {
-	font-family: 'Century Gothic';
+table {
+	margin: auto !important;
 }
 
 .cards {
 	display: flex;
 	flex-wrap: wrap;
-	max-width: 1000px;
+	max-width: 1200px;
 	margin: 20px auto;
 }
 
@@ -34,14 +28,14 @@ body {
 }
 
 .hardware-card {
-	background: var(--hardware-color);
+	background: var(--color-hardware);
 }
 
 .wetlab-card {
-	background: var(--wetlab-color);
+	background: var(--color-wetlab);
 }
 .software-card {
-	background: var(--software-color);
+	background: var(--color-software);
 }
 
 .card::before,
@@ -122,6 +116,33 @@ body {
 
 .card .description {
 	padding: 10px;
+}
+
+.card .description p {
+	padding: 10px;
+	font-size: medium !important;
+	text-align: center !important;
+}
+
+.card .description p.experiment {
+	border-bottom: white solid 2px;
+}
+
+.card .description p.experiment ~ p > span:first-child,
+.card .description p.experiment ~ p > strong:first-child {
+	font-size: 24px !important;
+}
+
+.card .description span {
+	color: white !important;
+}
+
+.card .description table {
+	background: rgba(0, 0, 0, 0.2) !important;
+}
+
+.card .description table td {
+	color: white;
 }
 
 .card .number {

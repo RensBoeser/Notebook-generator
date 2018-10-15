@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os, json, re
 
 def dateSortKey(entry):
@@ -7,6 +8,9 @@ def dateSortKey(entry):
 	else:
 		print(date)
 		return 1
+
+def htmlify(text):
+	return text.replace('µ', '&mu;').replace('é', '&eacute;').replace('°', '&deg;').replace('\u200B', '').replace('\u03bc', '&mu;').replace('º', '&deg;').replace('è', '&egrave;')
 
 def fillAttendees(entry):
 	# eLabJournal does not allow contributor names to be sent over the API due to missing functionalities.
@@ -68,7 +72,8 @@ class NotebookGenerator:
 																		 entry['experimentday'],
 																		 entry['category'],
 																		 id,
-																		 icon)
+																		 icon,
+																		 entry['experiment'] if 'experiment' in entry else "")
 	def GeneratePage(self):
 		month = {
 			1: "January",
@@ -93,7 +98,6 @@ class NotebookGenerator:
 			entry['dateformatted'] = str(month.get(int(splitdate[1]))) + " " + str(int(splitdate[0]))
 			entry['attendees'] = fillAttendees(entry)
 
-			entry['description'] = entry['description'].replace('µ', '&mu;').replace('é', 'e&#769;').replace('°', '&deg;')
 			# instances = [m.start() for m in re.finditer('°', entry['description'])]
 			# print(entry['title'] + ': ', end="")
 			# print(instances)
@@ -106,7 +110,7 @@ class NotebookGenerator:
 	
 	def WritePage(self, page):
 		with open(self._outputdir + 'project' + '-' + self.PageName.lower() + '.html', 'w') as f: # TODO: remove the hardcoded 'project' category
-			page = page.replace('\u200B', '')
+			page = htmlify(page)
 			f.write(page)
 
 if __name__ == '__main__': #Debug code
