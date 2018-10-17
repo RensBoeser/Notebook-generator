@@ -18,7 +18,7 @@ def fillAttendees(entry):
 	attendees = {
 		"assessing cooa production": "Dustin van der Meulen",
 		"assessing gas production biobricks in e.coli": "Elise Grootscholten | Randall de Waard",
-		"transformation": "Loraine Nelson | Elise Grootscholten | Paul Reusink",
+		"assessing different atp sensors": "Loraine Nelson | Elise Grootscholten | Paul Reusink",
 		"testing gas production": "Elise Grootscholten | Paul Reusink",
 		"urea and sodium pyruvate test for resistance e.coli": "Randall de Waard | Elise Grootscholten",
 		"chemo competent cells": "Dustin van der Meulen | Jos Veldscholte | Loraine Nelson",
