@@ -10,7 +10,7 @@ def dateSortKey(entry):
 		return 1
 
 def htmlify(text):
-	return text.replace('µ', '&mu;').replace('é', '&eacute;').replace('°', '&deg;').replace('\u200B', '').replace('\u03bc', '&mu;').replace('º', '&deg;').replace('è', '&egrave;')
+	return text.replace('µ', '&mu;').replace('é', '&eacute;').replace('°', '&deg;').replace('\u200B', '').replace('\u03bc', '&mu;').replace('º', '&deg;').replace('è', '&egrave;').replace('\u2248', '&asymp;')
 
 def fillAttendees(entry):
 	# eLabJournal does not allow contributor names to be sent over the API due to missing functionalities.
@@ -22,8 +22,9 @@ def fillAttendees(entry):
 		"testing gas production": "Elise Grootscholten | Paul Reusink",
 		"urea and sodium pyruvate test for resistance e.coli": "Randall de Waard | Elise Grootscholten",
 		"chemo competent cells": "Dustin van der Meulen | Jos Veldscholte | Loraine Nelson",
-		"making competent neB10beta cells": "Dustin van der Meulen | Jos Veldscholte",
-		"pcr": "Randall de Waard | Elise Grootscholten"
+		"making competent neb10beta cells": "Loraine Nelson | Jos Veldscholte",
+		"pcr": "Randall de Waard | Elise Grootscholten",
+		"preparing dna for submission": "Dustin Vermeulen | Elise Grootscholten | Randall de Waard"
 	}
 	if entry['attendees'] == "UNKNOWN":
 		entry['attendees'] = attendees.get(entry['title'].lower())
@@ -38,6 +39,18 @@ class NotebookGenerator:
 		self.Style  = '<style> \n{0}\n</style>'.format(open(self._libdir + 'notebook.css').read())
 		self.Header = '''
 	<h1 class="title">Notebook</h1>
+
+	<div class="text-container">
+		<p>
+			As a team with only one computer scientist (and one electrical engineer who can program),
+			we wanted a notebook that automatically updates whenever someone adds something to our lab journal.
+			Luckily, we gained a sponsor that gave use an electronic lab journal as sponsorship.
+			With this, we can use their API to download specific sections from our lab journal and display them on or wiki.
+			But, as a multidisciplinary team we have multiple kinds of notebook entries: Software, Hardware and Wetlab.
+			Therefore we also used the Google Drive RESTful API for downloading software and hardware entries from google sheets files.
+		</p>
+		<a class="nav-button" href="http://2018.igem.org/Team:Rotterdam_HR/Software">More info about the notebook generator</a>
+	</div>
 
 	<input type="checkbox" class="wetlab-filter" checked><span>show wetlab entries<br></span></input>
 	<input type="checkbox" class="hardware-filter" checked><span>show hardware entries<br></span></input>
